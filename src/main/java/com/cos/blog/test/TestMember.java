@@ -1,5 +1,15 @@
 package com.cos.blog.test;
 
+import lombok.*;
+
+import java.lang.reflect.Member;
+
+//@Getter
+//@Setter
+//@RequiredArgsConstructor // final 붙은 필드에 대한 생성자를 만들어준다.
+//@AllArgsConstructor // 전체 필드에 대한 생성자가 생성된다.
+@Data // Getter + Setter
+@NoArgsConstructor // 비어있는 기본 생성자
 public class TestMember {
     private int id;
     private String username;
@@ -11,42 +21,15 @@ public class TestMember {
     // 그 변수에 알맞는 메서드나 행동이 있어야 한다. 다이렉트 접근은 마법을 부리는 것과 마찬가지
 
 
+    // AllArgsConstructor 와 동일한 기능을 한다. 하지만 @Builder 를 사용하면?
+    // Builder 패턴의 장점
+    // 데이터를 넣을 때 순서를 지키지 않아도 된다.
+    // 생성자를 통해서 넣을 때는 반드시 id, username, password, email 순서를 지켜서 넣어야 한다.
+    @Builder
     public TestMember(int id, String username, String password, String email) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.email = email;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
     }
 }

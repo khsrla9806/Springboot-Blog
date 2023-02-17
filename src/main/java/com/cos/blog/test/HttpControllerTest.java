@@ -2,6 +2,8 @@ package com.cos.blog.test;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Member;
+
 // 사용자가 요청 -> 응답 (html 파일)을 하고 싶을 때는 @Controller 사용
 
 // 사용자가 요청 -> 응답 (데이터)
@@ -29,5 +31,16 @@ public class HttpControllerTest {
     @DeleteMapping("/http/delete")
     public String deleteTest() {
         return "DELETE 요청";
+    }
+
+    @GetMapping("/http/lombok/builder")
+    public String builderTest(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
+        TestMember m = TestMember.builder()
+                .username(username)
+                .password(password)
+                .email(email)
+                .build();
+
+        return "lombok Test 완료 : ," + m.getUsername() + ", " + m.getPassword() + ", " + m.getEmail() + ", " + m.getId();
     }
 }
