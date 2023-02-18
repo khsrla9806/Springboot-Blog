@@ -3,24 +3,35 @@ package com.cos.blog.test;
 import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
-import net.bytebuddy.TypeCache;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
-import java.util.function.Supplier;
 
 @RestController
 public class DummyControllerTest {
     @Autowired
     private UserRepository userRepository;
+
+    @Transactional // save 함수를 쓰지 않아도 수정이 된다 => 객체만 수정해줬을 뿐인데
+    @PutMapping("/dummy/user/{id}")
+    public User update(@PathVariable long id, @RequestBody User requestUser) { // @RequestBody : json 데이터로 받을 수 있음
+        // save 함수를 사용해서 수정하는 방법
+        // save : id를 전달하면 해당 id에 대한 데이터가 있으면 update 해줌
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            throw new IllegalArgumentException("찾는 유저가 없습니다 : " + id);
+        });
+        user.setEmail(requestUser.getEmail());
+        user.setPassword(requestUser.getPassword());
+        // userRepository.save(user);
+
+        // 더티 체킹
+        return user;
+    }
 
     @GetMapping("/dummy/users")
     public List<User> list() {
