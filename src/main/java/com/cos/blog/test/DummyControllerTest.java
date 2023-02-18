@@ -4,18 +4,37 @@ import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 public class DummyControllerTest {
     @Autowired
     private UserRepository userRepository;
+
+    @DeleteMapping("/dummy/user/{id}")
+    public String delete(@PathVariable long id) {
+        // 혼자 적어본 코드
+//        User user = userRepository.findById(id).orElseThrow(() -> {
+//            throw new IllegalArgumentException("삭제 실패 : " + id);
+//        });
+//        userRepository.delete(user);
+
+        try {
+            userRepository.deleteById(id); // 없는 아이디를 삭제하려고 할때 예외를 catch 해야함
+        } catch (EmptyResultDataAccessException e) {
+            return "삭제에 실패하였습니다. 해당 id를 갖는 사용자는 DB에 없습니다.";
+        }
+
+        return "삭제 되었습니다. " + id;
+    }
 
     @Transactional // save 함수를 쓰지 않아도 수정이 된다 => 객체만 수정해줬을 뿐인데 // 함수 종료시 자동 커밋
     @PutMapping("/dummy/user/{id}")
