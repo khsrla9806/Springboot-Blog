@@ -3,18 +3,42 @@ package com.cos.blog.test;
 import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
+import net.bytebuddy.TypeCache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 @RestController
 public class DummyControllerTest {
     @Autowired
     private UserRepository userRepository;
+
+    @GetMapping("/dummy/users")
+    public List<User> list() {
+        return userRepository.findAll(); // 전체 사용자가 모두 리턴된다.
+    }
+
+    // 한 페이지당 2건의 사용자를 리턴받는 메서드
+    @GetMapping("/dummy/user")
+    // http://localhost:8000/blog/dummy/user?page=0 (0은 첫 번째 페이지, 1은 그 다음 페이지)
+    public List<User> pageList(@PageableDefault(size = 2, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        // 데이터 사이즈(size)는 2건씩 정렬은 id로 하는데, 최신순이기 때문에 DESC 내림차순 정렬
+        return userRepository.findAll(pageable).getContent(); // Pageable.getContent()를 하면 List 반환
+        
+        // Page<User>로 반환하면 밑에 여러 다른 데이터들을 볼 수 있다.
+        // Page<User> pagingUser = userRepository.findAll(pageable);
+        // Pageable 다양한 메서드를 활용하고 싶다면 getContent()로 바로 리턴하는 것이 아니라 한번 거치는 것이 좋다.
+        // 첫 번째 데이터인지, 마지막 데이터인지 이런 기능들을 쓸 수 있다.
+    }
 
     @GetMapping("/dummy/user/{id}") // 주소로 파라미터를 전달받을 수 있다.
     public User detail(@PathVariable long id) {
