@@ -17,20 +17,25 @@ public class DummyControllerTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Transactional // save 함수를 쓰지 않아도 수정이 된다 => 객체만 수정해줬을 뿐인데
+    @Transactional // save 함수를 쓰지 않아도 수정이 된다 => 객체만 수정해줬을 뿐인데 // 함수 종료시 자동 커밋
     @PutMapping("/dummy/user/{id}")
     public User update(@PathVariable long id, @RequestBody User requestUser) { // @RequestBody : json 데이터로 받을 수 있음
         // save 함수를 사용해서 수정하는 방법
         // save : id를 전달하면 해당 id에 대한 데이터가 있으면 update 해줌
-        User user = userRepository.findById(id).orElseThrow(() -> {
+        User user = userRepository.findById(id).orElseThrow(() -> { // 이때 영속화가 된다.
             throw new IllegalArgumentException("찾는 유저가 없습니다 : " + id);
         });
+
+        // 더티 체킹
+        // 지금 현재 영속성 컨텍스트에 user 영속화되어 있다.
+        // 밑에서 setter 통해서 값을 변경하면 영속화된 user 오브젝트에 생긴 변경을 감지하고
+        // DB에 update 진행해준다. 이미 영속화된 user 오브젝트에 변경된 내용을 적용하고 DB에 flush 해서 update
         user.setEmail(requestUser.getEmail());
         user.setPassword(requestUser.getPassword());
         // userRepository.save(user);
 
-        // 더티 체킹
         return user;
+        // 메소드가 끝날 때 Transactional 덕분에 커밋이 된다.
     }
 
     @GetMapping("/dummy/users")
