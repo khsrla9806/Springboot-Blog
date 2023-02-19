@@ -35,7 +35,7 @@ let index = {
             dataType: "json"
         }).done(function(response) {
             // 정상이면 done 실행
-            console.log(response);
+            // console.log(response);
             alert("회원가입이 완료되었습니다.");
             location.href = "/blog";
         }).fail(function(error) {
