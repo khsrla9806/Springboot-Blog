@@ -13,14 +13,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Transactional // 회원가입 전체 서비스가 하나의 트랜잭션이 된다.
-    public int join(User user) {
-        try {
-            userRepository.save(user);
-            return 1; // 정상이면 1을 리턴
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("UserService join() : " + e.getMessage());
-        }
-        return -1; // 비정상이면 -1을 리턴
+    public void join(User user) {
+        userRepository.save(user); // 여기서 예외가 발생되면 GlobalExceptionHandler 로 가게 되어있다.
     }
 }
