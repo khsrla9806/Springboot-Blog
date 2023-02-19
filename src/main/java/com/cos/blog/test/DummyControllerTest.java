@@ -92,7 +92,7 @@ public class DummyControllerTest {
     }
 
     @PostMapping("/dummy/join")
-    public String join(User user) {
+    public String join(@RequestBody User user) { // json 데이터로 받도록 RequestBody 설정
         user.setRole(RoleType.USER);
         userRepository.save(user);
         return "회원가입이 완료되었습니다.";
