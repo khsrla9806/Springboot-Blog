@@ -22,7 +22,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 프로젝트에 연결된 DB 넘버링 전략을 따라간다. (auto increment)
     private long id;
 
-    @Column(nullable = false, length = 30) // null 없음
+    @Column(nullable = false, length = 30, unique = true) // unique = true 로 중복되는 아이디가 없도록 한다.
     private String username; // 회원 아이디
 
     @Column(nullable = false, length = 100) // 넉넉하게 주는 이유 -> 해쉬로 암호화하기 위해서
