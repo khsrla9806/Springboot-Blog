@@ -6,6 +6,10 @@ let index = {
         $("#btn-save").on("click", () => { // btn-save 라는 id 를 갖는 아이템이 클릭되면 save() 메서드가 실행됨
             this.save();
         });
+
+        $("#btn-login").on("click", () => {
+            this.login();
+        });
     },
 
     save: function() {
@@ -40,6 +44,26 @@ let index = {
             location.href = "/blog";
         }).fail(function(error) {
             // 실패하면 fail 실행
+            alert(JSON.stringify(error));
+        });
+    },
+
+    login: function() {
+        let data = {
+            username: $("#username").val(),
+            password: $("#password").val()
+        };
+
+        $.ajax({
+            type:"POST",
+            url:"/blog/api/user/login",
+            data:JSON.stringify(data),
+            contentType:"application/json; charset=utf-8",
+            dataType:"json"
+        }).done(function(response) {
+            alert("로그인이 완료되었습니다.");
+            location.href = "/blog";
+        }).fail(function(error) {
             alert(JSON.stringify(error));
         });
     }
