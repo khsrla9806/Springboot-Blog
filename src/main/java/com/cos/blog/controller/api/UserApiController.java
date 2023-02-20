@@ -17,9 +17,6 @@ public class UserApiController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private HttpSession session;
-
     @PostMapping("/api/user")
     public ResponseDto<Integer> save(@RequestBody User user) {
         // System.out.println("save 호출됨");
@@ -31,16 +28,18 @@ public class UserApiController {
 
     // 아래는 스프링의 전통적인 로그인 방식
     // 지금은 사용되지 않는다. Spring Security 사용
-    @PostMapping("/api/user/login")
-    public ResponseDto<Integer> login(@RequestBody User user) {
-        System.out.println("login 호출됨");
-        User principal = userService.login(user); // principal(접근주체)
+//    @PostMapping("/api/user/login")
+//    public ResponseDto<Integer> login(@RequestBody User user, HttpSession session) {
+//        System.out.println("login 호출됨");
+//        User principal = userService.login(user); // principal(접근주체)
+//
+//        // 로그인 세션 만들기
+//        if (principal != null) {
+//            session.setAttribute("principal", principal);
+//        }
+//
+//        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+//    }
 
-        // 로그인 세션 만들기
-        if (principal != null) {
-            session.setAttribute("principal", principal);
-        }
 
-        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
-    }
 }
