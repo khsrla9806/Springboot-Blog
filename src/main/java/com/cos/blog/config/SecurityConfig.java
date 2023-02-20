@@ -1,7 +1,10 @@
 package com.cos.blog.config;
 
+import com.cos.blog.config.auth.PrincipalDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,6 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity // Security 필터가 등록이 된다. 그 설정을 이 클래스에서 하겠다.
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 특정 주소를 접근하면 권한 및 인증을 미리 체크하겠다.
 public class SecurityConfig {
+    @Autowired
+    private PrincipalDetailService principalDetailService;
 
     @Bean // 이 메소드가 리턴되는 값을 IoC로 만들어준다.
     public BCryptPasswordEncoder encodePWD() {
@@ -19,6 +24,15 @@ public class SecurityConfig {
         // 비밀번호를 해쉬화 시켜주는 역할을 한다. ("1234" => 고정길이 문자열로 암호화)
         // String encPassword = new BCryptPasswordEncoder().encode("1234");
         return new BCryptPasswordEncoder();
+    }
+
+    // 시큐리티가 대신 로그인을 할때 password 를 가로채기 하는데
+    // 해당 password 가 뭘로 해쉬가 되어 회원가입 되었는지 알아야
+    // 같은 해쉬로 암호화해서 DB에 있는 해쉬랑 비교할 수 있음
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // principalDetailService 를 통해서 로그인을 진행할 때, 비밀번호 암호화를 하는데 사용했던 방법을 알려줘야 한다.
+        // 우리는 encodePWD()를 사용해서 암호화를 했기 때문에 아래와 같이 알려주면 된다.
+        auth.userDetailsService(principalDetailService).passwordEncoder(encodePWD());
     }
 
     @Bean
