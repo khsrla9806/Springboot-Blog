@@ -25,6 +25,6 @@
 </div>
 
 <%-- joinForm.jsp에서 발생하는 이벤트는 user.js에서 처리를 하겠다는 코드 --%>
-<script src="/blog/js/user.js"></script>
+<script src="/js/user.js"></script>
 
 <%@ include file="../layout/footer.jsp" %>

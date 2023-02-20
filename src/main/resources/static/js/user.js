@@ -30,7 +30,7 @@ let index = {
             // 너 어떤 방식으로 호출할거야?
             type: "POST",
             // 어느 URL 요청을 할래?
-            url: "/blog/api/user",
+            url: "/api/user",
             // 위에서 받은 javascript 타입의 오브젝트를 json 타입 문자열로 변경해줌
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
@@ -41,7 +41,7 @@ let index = {
             // 정상이면 done 실행
             // console.log(response);
             alert("회원가입이 완료되었습니다.");
-            location.href = "/blog";
+            location.href = "/";
         }).fail(function(error) {
             // 실패하면 fail 실행
             alert(JSON.stringify(error));
@@ -56,13 +56,13 @@ let index = {
 
         $.ajax({
             type:"POST",
-            url:"/blog/api/user/login",
+            url:"/api/user/login",
             data:JSON.stringify(data),
             contentType:"application/json; charset=utf-8",
             dataType:"json"
         }).done(function(response) {
             alert("로그인이 완료되었습니다.");
-            location.href = "/blog";
+            location.href = "/";
         }).fail(function(error) {
             alert(JSON.stringify(error));
         });

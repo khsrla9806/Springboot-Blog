@@ -16,7 +16,7 @@
 <body>
 
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-  <a class="navbar-brand" href="/blog">블로그</a>
+  <a class="navbar-brand" href="/">블로그</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -25,21 +25,21 @@
       <c:choose> <%-- jstl 을 사용한 if-else 문이다 --%>
         <c:when test="${empty sessionScope.principal}"> <%-- session 비어있는지 있는지 확인 --%>
           <li class="nav-item">
-            <a class="nav-link" href="/blog/user/loginForm">로그인</a>
+            <a class="nav-link" href="/loginForm">로그인</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/blog/user/joinForm">회원가입</a>
+            <a class="nav-link" href="/joinForm">회원가입</a>
           </li>
         </c:when>
         <c:otherwise>
           <li class="nav-item">
-            <a class="nav-link" href="/blog/board/writeForm">글쓰기</a>
+            <a class="nav-link" href="/board/form">글쓰기</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/blog/user/userForm">회원정보</a>
+            <a class="nav-link" href="/user/form">회원정보</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/blog/user/logout">로그아웃</a>
+            <a class="nav-link" href="/logout">로그아웃</a>
           </li>
         </c:otherwise>
       </c:choose>
