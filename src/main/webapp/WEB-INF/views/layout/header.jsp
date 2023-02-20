@@ -1,5 +1,12 @@
 <%@ page language = "java" contentType = "text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<sec:authorize access="isAuthenticated()">
+    <%-- principal 이라는 변수에 Session이 존재하는 Current User를 넣어서 사용할 수 있게 해줌 --%>
+    <sec:authentication property="principal" var="principal" />
+</sec:authorize>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +30,7 @@
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
       <c:choose> <%-- jstl 을 사용한 if-else 문이다 --%>
-        <c:when test="${empty sessionScope.principal}"> <%-- session 비어있는지 있는지 확인 --%>
+        <c:when test="${empty principal}"> <%-- session 비어있는지 있는지 확인 --%>
           <li class="nav-item">
             <a class="nav-link" href="/loginForm">로그인</a>
           </li>
