@@ -17,7 +17,7 @@ public class UserApiController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/api/user")
+    @PostMapping("/auth/joinProc")
     public ResponseDto<Integer> save(@RequestBody User user) {
         // System.out.println("save 호출됨");
 
@@ -25,9 +25,11 @@ public class UserApiController {
         userService.join(user);
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 자바 오브젝트를 JSON 으로 변경해서 응답을 보내줌
     }
+}
 
-    // 아래는 스프링의 전통적인 로그인 방식
-    // 지금은 사용되지 않는다. Spring Security 사용
+
+// 아래는 스프링의 전통적인 로그인 방식
+// 지금은 사용되지 않는다. Spring Security 사용
 //    @PostMapping("/api/user/login")
 //    public ResponseDto<Integer> login(@RequestBody User user, HttpSession session) {
 //        System.out.println("login 호출됨");
@@ -40,6 +42,3 @@ public class UserApiController {
 //
 //        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 //    }
-
-
-}

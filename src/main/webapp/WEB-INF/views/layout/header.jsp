@@ -32,10 +32,10 @@
       <c:choose> <%-- jstl 을 사용한 if-else 문이다 --%>
         <c:when test="${empty principal}"> <%-- session 비어있는지 있는지 확인 --%>
           <li class="nav-item">
-            <a class="nav-link" href="/loginForm">로그인</a>
+            <a class="nav-link" href="/auth/loginForm">로그인</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/joinForm">회원가입</a>
+            <a class="nav-link" href="/auth/joinForm">회원가입</a>
           </li>
         </c:when>
         <c:otherwise>

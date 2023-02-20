@@ -30,7 +30,7 @@ let index = {
             // 너 어떤 방식으로 호출할거야?
             type: "POST",
             // 어느 URL 요청을 할래?
-            url: "/api/user",
+            url: "/auth/joinProc",
             // 위에서 받은 javascript 타입의 오브젝트를 json 타입 문자열로 변경해줌
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
@@ -48,6 +48,7 @@ let index = {
         });
     },
 
+    // 스프링 시큐리티에서는 아래 함수를 사용하지 않을 것이다.
     login: function() {
         let data = {
             username: $("#username").val(),
