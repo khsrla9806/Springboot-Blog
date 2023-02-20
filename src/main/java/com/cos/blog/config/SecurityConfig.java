@@ -32,8 +32,12 @@ public class SecurityConfig {
                 .authenticated()                                                        // 인증이 되어야돼
             .and()
                 .formLogin()
-                .loginPage("/auth/loginForm");              // 인증이 필요한 요청이 들어오면 /auth/loginForm 으로 보내줘
+                .loginPage("/auth/loginForm")              // 인증이 필요한 요청이 들어오면 /auth/loginForm 으로 보내줘
+                .loginProcessingUrl("/auth/loginProc")     // 스프링 시큐리티가 해당 주소로 요청하는 로그인을 가로채고, 대신해줌
+                .defaultSuccessUrl("/");                   // 로그인이 성공하면 여기로 보내줘.
 
         return http.build();
     }
+
+
 }
