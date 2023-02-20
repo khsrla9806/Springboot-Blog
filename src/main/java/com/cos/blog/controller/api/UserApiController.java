@@ -23,6 +23,8 @@ public class UserApiController {
         userService.join(user);
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 자바 오브젝트를 JSON 으로 변경해서 응답을 보내줌
     }
+
+    // /auth/loginProc는 여기에 만들지 않을 것이다. 로그인은 스프링 시큐리티가 중간에 가로채갈 것이기 때문에
 }
 
 
