@@ -1,8 +1,10 @@
 package com.cos.blog.service;
 
+import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,8 +13,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     @Transactional
     public void join(User user) {
+        String rawPassword = user.getPassword(); // 입력한 비밀번호 그대로
+        String encPassword = encoder.encode(rawPassword); // rawPassword 해쉬화
+        user.setPassword(encPassword);
+        user.setRole(RoleType.USER);
         userRepository.save(user); // 여기서 예외가 발생되면 GlobalExceptionHandler 로 가게 되어있다.
     }
 

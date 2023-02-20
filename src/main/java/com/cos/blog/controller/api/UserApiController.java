@@ -20,8 +20,6 @@ public class UserApiController {
     @PostMapping("/auth/joinProc")
     public ResponseDto<Integer> save(@RequestBody User user) {
         // System.out.println("save 호출됨");
-
-        user.setRole(RoleType.USER);
         userService.join(user);
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 자바 오브젝트를 JSON 으로 변경해서 응답을 보내줌
     }
