@@ -16,8 +16,11 @@ public class UserService {
         userRepository.save(user); // 여기서 예외가 발생되면 GlobalExceptionHandler 로 가게 되어있다.
     }
 
-    @Transactional(readOnly = true) // Select 할 때 트랜잭션 시작, 서비스 종료시 종료 (정합성을 유지)
-    public User login(User user) {
-        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-    }
 }
+
+
+//    해당 로그인 로직은 사용하지 않을 것이다. (스프링 시큐리티로 대체)
+//    @Transactional(readOnly = true) // Select 할 때 트랜잭션 시작, 서비스 종료시 종료 (정합성을 유지)
+//    public User login(User user) {
+//        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+//    }
