@@ -7,9 +7,7 @@ import com.cos.blog.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class BoardApiController {
@@ -20,6 +18,12 @@ public class BoardApiController {
     public ResponseDto<Integer> save(@RequestBody Board board, @AuthenticationPrincipal PrincipalDetail principal) {
         // 요청하는 유저의 UserDetails를 넘겨줘야 하기 때문에 AuthenticationPrincipal을 사용한다.
         boardService.write(board, principal.getUser());
+        return new ResponseDto<>(HttpStatus.OK.value(), 1);
+    }
+
+    @DeleteMapping("/api/board/{id}")
+    public ResponseDto<Integer> deleteById(@PathVariable int id) {
+        boardService.deleteBoard(id);
         return new ResponseDto<>(HttpStatus.OK.value(), 1);
     }
 }

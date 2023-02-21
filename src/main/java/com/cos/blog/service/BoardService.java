@@ -28,9 +28,15 @@ public class BoardService {
         return boardRepository.findAll(pageable);
     }
 
+    @Transactional(readOnly = true) // SELECT만 하기 때문에 readOnly 설정
     public Board detail(int id) {
         return boardRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException("찾는 게시글은 없습니다. : " + id);
         });
+    }
+
+    @Transactional
+    public void deleteBoard(int id) {
+        boardRepository.deleteById(id);
     }
 }
