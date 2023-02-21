@@ -39,4 +39,18 @@ public class BoardService {
     public void deleteBoard(int id) {
         boardRepository.deleteById(id);
     }
+
+    @Transactional
+    public void update(int id, Board requestBoard) {
+        // 영속성 컨텍스트에 DB 데이터를 먼저 영속화 시켜야 한다.
+        Board board = boardRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("해당 아이디 값을 가지는 게시글은 존재하지 않습니다. : " + id);
+        });
+
+        // 수정된 내용을 적용
+        board.setTitle(requestBoard.getTitle());
+        board.setContent(requestBoard.getContent());
+
+        // 서비스가 종료될 때, 더티체킹이 일어나고 DB에 수정내용을 flush 진행하여 DB에 적용 (Transactional 어노테이션 필수)
+    }
 }

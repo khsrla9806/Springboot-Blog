@@ -26,4 +26,10 @@ public class BoardApiController {
         boardService.deleteBoard(id);
         return new ResponseDto<>(HttpStatus.OK.value(), 1);
     }
+
+    @PutMapping("/api/board/{id}")
+    public ResponseDto<Integer> update(@PathVariable int id, @RequestBody Board board) {
+        boardService.update(id, board);
+        return new ResponseDto<>(HttpStatus.OK.value(), 1);
+    }
 }
