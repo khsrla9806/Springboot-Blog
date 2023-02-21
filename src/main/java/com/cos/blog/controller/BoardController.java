@@ -38,6 +38,12 @@ public class BoardController {
     public String saveForm() {
         return "board/saveForm";
     }
+
+    @GetMapping("/board/{id}/updateForm")
+    public String updateForm(@PathVariable int id, Model model) {
+        model.addAttribute("board", boardService.detail(id));
+        return "board/updateForm";
+    }
 }
 
       //@AuthenticationPrincipal 을 이용해서 세션에 접근할 수 있다.
