@@ -6,16 +6,16 @@
 <div class="container">
     <form>
       <div class="form-group">
-        <label for="title">Title</label>
+        <label for="title">제목</label>
         <input type="text" class="form-control" placeholder="Enter title" id="title">
       </div>
       <div class="form-group">
-        <label for="content">Content</label>
+        <label for="content">글 내용</label>
         <textarea class="form-control summernote" rows="5" id="content"></textarea>
       </div>
     </form>
 
-    <button id="save" class="btn btn-primary">글쓰기 완료</button>
+    <button id="btn-save" class="btn btn-primary">글쓰기 완료</button>
 </div>
 
 <script src="/js/board.js"></script>
