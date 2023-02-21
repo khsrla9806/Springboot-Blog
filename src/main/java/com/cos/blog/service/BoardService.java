@@ -6,6 +6,7 @@ import com.cos.blog.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,5 +26,11 @@ public class BoardService {
 
     public Page<Board> findAllBoard(Pageable pageable) {
         return boardRepository.findAll(pageable);
+    }
+
+    public Board detail(int id) {
+        return boardRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("찾는 게시글은 없습니다. : " + id);
+        });
     }
 }

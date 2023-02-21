@@ -1,6 +1,7 @@
 package com.cos.blog.controller;
 
 import com.cos.blog.config.auth.PrincipalDetail;
+import com.cos.blog.model.Board;
 import com.cos.blog.service.BoardService;
 import net.bytebuddy.TypeCache;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class BoardController {
@@ -23,6 +25,12 @@ public class BoardController {
         model.addAttribute("boards", boardService.findAllBoard(pageable)); // Page타입을 index.jsp로 넘김
         // /WEB-INF/views/index.jsp 찾아감
         return "index"; // viewResolver가 작동됨
+    }
+
+    @GetMapping("/board/{id}")
+    public String findById(@PathVariable int id, Model model) {
+        model.addAttribute("board", boardService.detail(id));
+        return "board/detail";
     }
 
     // User 권한이 필요
