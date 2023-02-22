@@ -10,6 +10,10 @@ let index = {
         $("#btn-login").on("click", () => {
             this.login();
         });
+
+        $("#btn-update").on("click", () => {
+            this.update();
+        });
     },
 
     save: function() {
@@ -67,7 +71,28 @@ let index = {
         }).fail(function(error) {
             alert(JSON.stringify(error));
         });
-    }
+    },
+
+    update: function() {
+        let data = {
+            id: $("#id").val(),
+            password: $("#password").val(),
+            email: $("#email").val()
+        };
+
+        $.ajax({
+            type: "PUT",
+            url: "/user",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        }).done(function(response) {
+            alert("회원 수정이 완료되었습니다.");
+            location.href = "/";
+        }).fail(function(error) {
+            alert(JSON.stringify(error));
+        });
+    },
 }
 
 index.init(); // index 를 바인딩하고 가지고 있다가 btn-save 에 클릭이 들어오면 init function 실행
