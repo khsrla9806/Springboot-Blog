@@ -4,6 +4,7 @@ import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,16 @@ public class UserService {
         user.setPassword(encPassword);
         user.setRole(RoleType.USER);
         userRepository.save(user); // 여기서 예외가 발생되면 GlobalExceptionHandler 로 가게 되어있다.
+    }
+
+    @Transactional
+    public void update(User user) {
+        User persistance = userRepository.findById(user.getId()).orElseThrow(() -> {
+            throw new NotFoundException("수정하고자 하는 유저가 존재하지 않습니다.");
+        });
+
+        persistance.setEmail(user.getEmail());
+        persistance.setPassword(encoder.encode(user.getPassword())); // 해쉬화한 비밀번호를 저장
     }
 
 }
