@@ -6,6 +6,10 @@ import com.cos.blog.model.User;
 import com.cos.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -14,6 +18,9 @@ import javax.servlet.http.HttpSession;
 public class UserApiController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @PostMapping("/auth/joinProc")
     public ResponseDto<Integer> save(@RequestBody User user) {
@@ -25,6 +32,17 @@ public class UserApiController {
     @PutMapping("/user")
     public ResponseDto<Integer> update(@RequestBody User user) {
         userService.update(user);
+
+        // 여기서 UserService의 update 함수가 끝나고, 트랜잭션이 종료되면서 DB에 값이 수정된다.
+        // 하지만 세션값은 아직 변경되지 않았기 때문에 우리가 직접 세션값을 변경해줘야 한다.
+
+        // 직접 authenticationManager을 가지고 Authentication 객체를 만들어준다.
+        // 이때는 UsernamePasswordAuthenticationToken이 필요하기 때문에 user의 username과 password가 필요하다.
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+
+        // 이제 위에서 만들어준 Authentication 객체를 시큐리티 컨텍스트에 직접 넣어주면 세션이 변경될 것이다.
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         return new ResponseDto<>(HttpStatus.OK.value(), 1);
     }
 
