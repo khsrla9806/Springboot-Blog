@@ -17,6 +17,14 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder encoder;
 
+    @Transactional(readOnly = true)
+    public User findUser(String username) {
+        User user = userRepository.findByUsername(username).orElseGet(() -> {
+            return new User();
+        });
+        return user;
+    }
+
     @Transactional
     public void join(User user) {
         String rawPassword = user.getPassword(); // 입력한 비밀번호 그대로
@@ -32,8 +40,11 @@ public class UserService {
             throw new NotFoundException("수정하고자 하는 유저가 존재하지 않습니다.");
         });
 
-        persistance.setEmail(user.getEmail());
-        persistance.setPassword(encoder.encode(user.getPassword())); // 해쉬화한 비밀번호를 저장
+        // 소셜 로그인으로 가입한 사람만 비밀번호, 이메일 수정이 가능
+        if (persistance.getOauth() == null || persistance.getOauth().equals("")) {
+            persistance.setEmail(user.getEmail());
+            persistance.setPassword(encoder.encode(user.getPassword())); // 해쉬화한 비밀번호를 저장
+        }
     }
 
 }
