@@ -66,21 +66,25 @@ public class BoardService {
 
     @Transactional
     public void makeReply(ReplySaveRequestDto requestDto) {
-        Board board = boardRepository.findById(requestDto.getBoardId()).orElseThrow(() -> {
-            throw new NotFoundException("댓글 작성을 위한 게시글 정보를 찾을 수 없습니다.");
-        });
+        // 직접 영속화를 사용하여 댓글 저장하기
+//        Board board = boardRepository.findById(requestDto.getBoardId()).orElseThrow(() -> {
+//            throw new NotFoundException("댓글 작성을 위한 게시글 정보를 찾을 수 없습니다.");
+//        });
+//
+//        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(() -> {
+//            throw new NotFoundException("작성자 정보를 찾을 수 없습니다.");
+//        });
+//
+//        Reply reply = Reply.builder()
+//                .user(user)
+//                .content(requestDto.getContent())
+//                .board(board)
+//                .build();
+//
+//        replyRepositroy.save(reply);
 
-        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(() -> {
-            throw new NotFoundException("작성자 정보를 찾을 수 없습니다.");
-        });
-
-        Reply reply = Reply.builder()
-                .user(user)
-                .content(requestDto.getContent())
-                .board(board)
-                .build();
-
-        replyRepositroy.save(reply);
+        // Native Query를 이용하여 댓글 저장하기
+        replyRepositroy.customSave(requestDto.getUserId(), requestDto.getBoardId(), requestDto.getContent());
     }
 
 }
