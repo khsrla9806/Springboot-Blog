@@ -1,5 +1,6 @@
 package com.cos.blog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,6 +38,7 @@ public class Board {
     // 이것을 설정해줘야지 Board select 할때 연관된 Reply를 같이 Join해서 줌
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER) // mappedBy는 나는 연관관계의 주인이 아니다 -> 내 주인은 Reply 클래스에 있는 "board"이다.
     // @JoinColumn: 하지만 제 1정규형을 지키기 위해서 굳이 Board 테이블에 필드를 생성해줄 필요가 없다.
+    @JsonIgnoreProperties({"board"}) // 무한 참조를 막기위한 방법 : reply를 호출할 때, reply가 가지고 있는 board는 더이상 참조되지 않는다.
     private List<Reply> reply;
 
     @CreationTimestamp
