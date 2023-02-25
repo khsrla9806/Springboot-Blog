@@ -1,8 +1,10 @@
 package com.cos.blog.service;
 
 import com.cos.blog.model.Board;
+import com.cos.blog.model.Reply;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.BoardRepository;
+import com.cos.blog.repository.ReplyRepositroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,9 @@ import java.util.List;
 public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private ReplyRepositroy replyRepositroy;
 
     @Transactional
     public void write(Board board, User user) { // title, content
@@ -53,4 +58,15 @@ public class BoardService {
 
         // 서비스가 종료될 때, 더티체킹이 일어나고 DB에 수정내용을 flush 진행하여 DB에 적용 (Transactional 어노테이션 필수)
     }
+
+    @Transactional
+    public void makeReply(User user, int boardId, Reply requestReply) {
+        requestReply.setUser(user);
+        requestReply.setBoard(boardRepository.findById(boardId).orElseThrow(() -> {
+            throw new NotFoundException("댓글 쓰기 쓰기 실패 : 게시글를 찾아올 수 없습니다.");
+        }));
+
+        replyRepositroy.save(requestReply);
+    }
+
 }
