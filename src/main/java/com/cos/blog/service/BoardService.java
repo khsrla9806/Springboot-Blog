@@ -1,10 +1,12 @@
 package com.cos.blog.service;
 
+import com.cos.blog.dto.ReplySaveRequestDto;
 import com.cos.blog.model.Board;
 import com.cos.blog.model.Reply;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.BoardRepository;
 import com.cos.blog.repository.ReplyRepositroy;
+import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,9 @@ public class BoardService {
 
     @Autowired
     private ReplyRepositroy replyRepositroy;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional
     public void write(Board board, User user) { // title, content
@@ -60,13 +65,22 @@ public class BoardService {
     }
 
     @Transactional
-    public void makeReply(User user, int boardId, Reply requestReply) {
-        requestReply.setUser(user);
-        requestReply.setBoard(boardRepository.findById(boardId).orElseThrow(() -> {
-            throw new NotFoundException("댓글 쓰기 쓰기 실패 : 게시글를 찾아올 수 없습니다.");
-        }));
+    public void makeReply(ReplySaveRequestDto requestDto) {
+        Board board = boardRepository.findById(requestDto.getBoardId()).orElseThrow(() -> {
+            throw new NotFoundException("댓글 작성을 위한 게시글 정보를 찾을 수 없습니다.");
+        });
 
-        replyRepositroy.save(requestReply);
+        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(() -> {
+            throw new NotFoundException("작성자 정보를 찾을 수 없습니다.");
+        });
+
+        Reply reply = Reply.builder()
+                .user(user)
+                .content(requestDto.getContent())
+                .board(board)
+                .build();
+
+        replyRepositroy.save(reply);
     }
 
 }
