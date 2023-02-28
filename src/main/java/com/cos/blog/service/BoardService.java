@@ -7,6 +7,7 @@ import com.cos.blog.model.User;
 import com.cos.blog.repository.BoardRepository;
 import com.cos.blog.repository.ReplyRepositroy;
 import com.cos.blog.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,15 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BoardService {
-    @Autowired
-    private BoardRepository boardRepository;
-
-    @Autowired
-    private ReplyRepositroy replyRepositroy;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final BoardRepository boardRepository;
+    private final ReplyRepositroy replyRepositroy;
+    private final UserRepository userRepository;
 
     @Transactional
     public void write(Board board, User user) { // title, content

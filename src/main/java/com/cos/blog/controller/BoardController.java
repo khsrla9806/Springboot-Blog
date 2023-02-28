@@ -3,6 +3,7 @@ package com.cos.blog.controller;
 import com.cos.blog.config.auth.PrincipalDetail;
 import com.cos.blog.model.Board;
 import com.cos.blog.service.BoardService;
+import lombok.RequiredArgsConstructor;
 import net.bytebuddy.TypeCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +16,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
+@RequiredArgsConstructor
 public class BoardController {
-    @Autowired
-    private BoardService boardService;
+    private final BoardService boardService;
+
     @GetMapping({"","/"}) // 아무것도 안 붙였을 때랑 /를 붙였을 때 작동
     public String index(Model model, @PageableDefault(size=3, sort="id", direction= Sort.Direction.DESC)Pageable pageable) {
         // jsp에서 사용할 수 있는 데이터를 들고 갈 때는 Model을 사용한다.

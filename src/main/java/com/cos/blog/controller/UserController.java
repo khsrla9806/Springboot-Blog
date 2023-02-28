@@ -7,6 +7,7 @@ import com.cos.blog.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -32,16 +33,15 @@ import java.util.UUID;
 // 그냥 주소가 /이면 index.jsp 로 가는 것도 인증 안된 사용자가 출입하는 것을 허용
 // static 이하에 있는 /js/** 와 /css/** 와 /image/** 도 모두 허용된다.
 @Controller
+@RequiredArgsConstructor
 public class UserController {
 
     @Value("${cos.key}")
     private String cosKey; // 이 키는 중요한 키기 때문에 절대 노출되면 안된다.
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/auth/joinForm")
     public String joinForm() {
