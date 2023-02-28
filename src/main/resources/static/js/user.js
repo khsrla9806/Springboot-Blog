@@ -42,10 +42,14 @@ let index = {
             // 하지만 json 이라고 적어주면 응답되는 데이터가 json 타입 처럼 생겼는지 확인한 후 맞다면 javascript 오브젝트로 바꿔준다.
             dataType: "json"
         }).done(function(response) {
-            // 정상이면 done 실행
-            // console.log(response);
-            alert("회원가입이 완료되었습니다.");
-            location.href = "/";
+            if (response.status === 500) {
+                alert("회원가입에 실패했습니다.");
+            } else {
+                // 정상이면 done 실행
+                // console.log(response);
+                alert("회원가입이 완료되었습니다.");
+                location.href = "/";
+            }
         }).fail(function(error) {
             // 실패하면 fail 실행
             alert(JSON.stringify(error));
