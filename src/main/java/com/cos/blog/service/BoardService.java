@@ -84,4 +84,8 @@ public class BoardService {
         replyRepositroy.customSave(requestDto.getUserId(), requestDto.getBoardId(), requestDto.getContent());
     }
 
+    @Transactional
+    public void deleteReply(int replyId) {
+        replyRepositroy.deleteById(replyId);
+    }
 }

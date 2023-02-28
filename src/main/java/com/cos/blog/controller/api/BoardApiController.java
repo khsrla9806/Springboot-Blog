@@ -42,4 +42,10 @@ public class BoardApiController {
         boardService.makeReply(requestDto);
         return new ResponseDto<>(HttpStatus.OK.value(), 1);
     }
+
+    @DeleteMapping("/api/board/{boardId}/reply/{replyId}")
+    public ResponseDto<Integer> replyDelete(@PathVariable int replyId) {
+        boardService.deleteReply(replyId);
+        return new ResponseDto<>(HttpStatus.OK.value(), 1);
+    }
 }
